@@ -58,3 +58,5 @@ const buttonEqual = () => {
 
 //Function Delete
 const buttonDelete = () => {};
+
+//burasd

@@ -1,109 +1,82 @@
 let num1 = "";
 let num2 = "";
 let operator = "";
-let switchNum = 1;
+let curOp = "";
+let displayNum = "";
 const display = document.querySelector(".calculator-display");
 
-//button to CalDisplay,switch = 0 (which execute after a operator) add to num2 ,switch = 1 add to num1, switch = 2 add to num2
+// updateDisplay
+function updateDisplay() {
+  display.innerHTML = displayNum;
+}
+
+//addNumber onclick
 const addNumber = (num) => {
-  if (switchNum === 0) {
-    num2 = num;
-    switchNum = 2;
-    display.innerHTML = `${num2}`;
-  } else if ((num1 === "") && (switchNum === 1)) {
-    num1 = num;
-    display.innerHTML = `${num1}`;
-  } else if ((num1 != "") && (switchNum === 1)) {
-    num1 = `${num1}${num}`;
-    display.innerHTML = `${num1}`;
-  } else if ((num2 === "") && (switchNum === 2)) {
-    num2 = num;
-    display.innerHTML = `${num2}`;
-  } else if ((num2 != "") && (switchNum === 2)) {
-    num2 = `${num2}${num}`;
-    display.innerHTML = `${num2}`;
-  }
+  displayNum += num;
+  updateDisplay();
 };
 
-//Function plus
-const buttonPlus = () => {
-  switchNum = 2;
-  operator = "plus";
-  
-  if (num2 != "") {
-    switchNum = 0;
-    num1 = parseFloat(num1, "") + parseFloat(num2, "");
-    return (display.innerHTML = `${num1}`);
-  }
-};
-
-//Function minus
-const buttonMinus = () => {
-  switchNum = 2;
-  operator = "minus";
-  if (num2 != "") {
-    switchNum = 0;
-    num1 = parseFloat(num1, "") - parseFloat(num2, "");
-    return (display.innerHTML = `${num1}`);
-  }
-};
-
-//Function multiply
-const buttonMultiply = () => {
-  switchNum = 2;
-  operator = "multiply";
-  if (num2 != "") {
-    switchNum = 0;
-    num1 = parseFloat(num1, "") * parseFloat(num2, "");
-    return (display.innerHTML = `${num1}`);
-  }
-};
-
-//Function divide
-const buttonDivide = (num1, num2) => {
-  switchNum = 2;
-  operator = "divide";
-  if (num2 != "") {
-    switchNum = 0;
-    num1 = parseFloat(num1, "") / parseFloat(num2, "");
-    return (display.innerHTML = `${num1}`);
-  }
+//Function operation
+const operation = (op) => {
+  num1 = !num1 ? Number(displayNum) : num1;
+  num2 = "";
+  displayNum = "";
+  curOp = op;
+  updateDisplay();
 };
 
 //Function reset
 const buttonReset = () => {
-  operator = "";
-  switchNum = 1;
   num1 = "";
   num2 = "";
-  display.innerHTML = "";
+  displayNum = "";
+  curOp = "";
+  operator = "";
+  updateDisplay();
 };
 
 //Function equal
 const buttonEqual = () => {
-  switchNum = 1;
-  if ((operator === "plus")) {
-    buttonPlus();
-  } else if ((operator === "minus")) {
-    buttonMinus();
-  } else if ((operator === "multiply")) {
-    buttonMultiply();
-  } else if ((operator === "divide")) {
-    buttonDivide();
-  } else {
-    operator = "";
-    display.innerHTML = `${num1}`;
+  num2 = !num2 ? Number(displayNum) : num2;
+
+  switch (curOp) {
+    case "plus":
+      operator = num1 + num2;
+      displayNum = operator;
+      break;
+    case "minus":
+      operator = num1 - num2;
+      displayNum = operator;
+      break;
+    case "divide":
+      operator = num1 / num2;
+      displayNum = operator;
+      break;
+    case "multiply":
+      operator = num1 * num2;
+      displayNum = operator;
+      break;
+    default:
+      break;
   }
+
+  num1 = Number(displayNum);
+
+  updateDisplay();
 };
 
 //Function Delete
-const buttonDelete = () => {
-  if (operator != "") {
-    num2 = "";
-    switchNum = 1;
-    operator = "";
-    display.innerHTML = `${num1}`;
-  } else {
 
+const buttonDelete = () => {
+  if (curOp === "") {
+    displayNum = displayNum.toString();
+    delNum = displayNum.slice(0, -1);
+    displayNum = delNum;
+    console.log(typeof displayNum);
+  } else {
+    curOp = "";
+    operator = "";
+    num1 = Number(displayNum);
   }
+  updateDisplay();
 };

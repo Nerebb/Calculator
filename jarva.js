@@ -19,10 +19,14 @@ const addNumber = (num) => {
 //Function operation
 const operation = (op) => {
   num1 = !num1 ? Number(displayNum) : num1;
-  num2 = "";
-  displayNum = "";
+  //User re-click operation function
+  if (curOp === op && !num2) {
+    buttonEqual();
+  } else {
+    displayNum = "";
+  }
   curOp = op;
-  updateDisplay();
+  console.log(num2)
 };
 
 //Function reset
@@ -59,9 +63,8 @@ const buttonEqual = () => {
     default:
       break;
   }
-
+  console.log(num1, num2, operator);
   num1 = Number(displayNum);
-
   updateDisplay();
 };
 
